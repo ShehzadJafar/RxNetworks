@@ -1,0 +1,75 @@
+PODS:
+  - Alamofire (5.5.0)
+  - HandyJSON (5.0.2)
+  - MBProgressHUD (1.2.0)
+  - Moya (15.0.0):
+    - Moya/Core (= 15.0.0)
+  - Moya/Core (15.0.0):
+    - Alamofire (~> 5.0)
+  - RxCocoa (6.2.0):
+    - RxRelay (= 6.2.0)
+    - RxSwift (= 6.2.0)
+  - RxNetworks (0.0.1):
+    - RxNetworks/HandyJSON (= 0.0.1)
+    - RxNetworks/MoyaNetwork (= 0.0.1)
+    - RxNetworks/MoyaPlugins (= 0.0.1)
+  - RxNetworks/HandyJSON (0.0.1):
+    - HandyJSON
+    - RxSwift
+  - RxNetworks/MoyaNetwork (0.0.1):
+    - Moya
+    - RxSwift
+  - RxNetworks/MoyaPlugins (0.0.1):
+    - RxNetworks/MoyaPlugins/Cache (= 0.0.1)
+    - RxNetworks/MoyaPlugins/Indicator (= 0.0.1)
+    - RxNetworks/MoyaPlugins/Loading (= 0.0.1)
+    - RxNetworks/MoyaPlugins/Warning (= 0.0.1)
+  - RxNetworks/MoyaPlugins/Cache (0.0.1):
+    - RxNetworks/MoyaNetwork
+    - YYCache
+  - RxNetworks/MoyaPlugins/Indicator (0.0.1):
+    - RxNetworks/MoyaNetwork
+  - RxNetworks/MoyaPlugins/Loading (0.0.1):
+    - MBProgressHUD
+    - RxNetworks/MoyaNetwork
+  - RxNetworks/MoyaPlugins/Warning (0.0.1):
+    - MBProgressHUD
+    - RxNetworks/MoyaNetwork
+  - RxRelay (6.2.0):
+    - RxSwift (= 6.2.0)
+  - RxSwift (6.2.0)
+  - YYCache (1.0.4)
+
+DEPENDENCIES:
+  - RxCocoa
+  - RxNetworks (from `./`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - HandyJSON
+    - MBProgressHUD
+    - Moya
+    - RxCocoa
+    - RxRelay
+    - RxSwift
+    - YYCache
+
+EXTERNAL SOURCES:
+  RxNetworks:
+    :path: "./"
+
+SPEC CHECKSUMS:
+  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
+  HandyJSON: 9e4e236f5d2dbefad5155a77417bbea438201c03
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+  Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
+  RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
+  RxNetworks: 16d3b8a6eb1df8b8cce05e86df30fed668747e4a
+  RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
+  RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
+  YYCache: 8105b6638f5e849296c71f331ff83891a4942952
+
+PODFILE CHECKSUM: 9ca222e759ec8fbda21fc2f654e9379220fa5abd
+
+COCOAPODS: 1.11.2
