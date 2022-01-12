@@ -42,6 +42,14 @@ extension NetworkAPI {
         var tempPlugins: APIPlugins = self.plugins
         NetworkUtil.defaultPlugin(&tempPlugins)
         
+        let target = MultiTarget.target(self)
+
+        let (result, end) = NetworkUtil.handyConfigurationPlugin(tempPlugins, target: target)
+        if end == true {
+            let single = NetworkUtil.transformAPISingleJSON(result)
+            return single
+        }
+        
         let configuration = URLSessionConfiguration.default
         configuration.headers = .default
         configuration.timeoutIntervalForRequest = 30
@@ -49,7 +57,13 @@ extension NetworkAPI {
         let MoyaProvider = MoyaProvider<MultiTarget>(stubClosure: { _ in
             return stubBehavior
         }, session: session, plugins: tempPlugins)
-        return MoyaProvider.rx.request(api: self, callbackQueue: callbackQueue)
+        let single = MoyaProvider.rx.request(api: self, callbackQueue: callbackQueue)
+        
+        let angin = NetworkUtil.handyAutoAnginRequestPlugin(tempPlugins, target: target, single: single)
+        if angin == true {
+            return self.request(callbackQueue: callbackQueue)
+        }
+        return single
     }
 }
 

@@ -36,7 +36,7 @@ public final class NetworkLoadingPlugin {
     }
 }
 
-extension NetworkLoadingPlugin: PluginType {
+extension NetworkLoadingPlugin: PluginSubType {
     
     public func willSend(_ request: RequestType, target: TargetType) {
         if displayLoading {

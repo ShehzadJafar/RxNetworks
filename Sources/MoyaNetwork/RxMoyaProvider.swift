@@ -21,7 +21,7 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
     ///   - callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
     /// - Returns: Single sequence JSON object.
     func request(api: NetworkAPI, callbackQueue: DispatchQueue? = nil) -> APISingleJSON {
-        Single.create { single in
+        APISingleJSON.create { single in
             let token = base.request(.target(api), callbackQueue: callbackQueue, progress: nil) { result in
                 switch result {
                 case let .success(response):

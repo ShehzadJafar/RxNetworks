@@ -19,9 +19,9 @@ import Moya
 public typealias APIHost = String
 public typealias APIMethod = Moya.Method
 public typealias APIParameters = Alamofire.Parameters
-public typealias APIPlugins = [Moya.PluginType]
+public typealias APIPlugins = [RxNetworks.PluginSubType]
 public typealias APIStubBehavior = Moya.StubBehavior
-public typealias APISingleJSON = Single<Any>
+public typealias APISingleJSON = RxSwift.Single<Any>
 
 /// 网络配置信息，只需要在程序开启的时刻配置一次
 /// Network configuration information, only need to be configured once when the program is started

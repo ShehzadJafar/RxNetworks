@@ -71,10 +71,10 @@
 		04233501278E61DE00547494 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				04233502278E61DE00547494 /* CacheViewModel.swift */,
-				04233503278E61DE00547494 /* CacheViewController.swift */,
 				04233504278E61DE00547494 /* CacheAPI.swift */,
 				04233505278E61DE00547494 /* CacheModel.swift */,
+				04233503278E61DE00547494 /* CacheViewController.swift */,
+				04233502278E61DE00547494 /* CacheViewModel.swift */,
 			);
 			name = Cache;
 			path = Modules/Cache;
@@ -94,9 +94,9 @@
 		0423350A278E61DE00547494 /* Moya */ = {
 			isa = PBXGroup;
 			children = (
-				0423350B278E61DE00547494 /* MoyaViewModel.swift */,
-				0423350C278E61DE00547494 /* MoyaViewController.swift */,
 				0423350D278E61DE00547494 /* MoyaAPI.swift */,
+				0423350C278E61DE00547494 /* MoyaViewController.swift */,
+				0423350B278E61DE00547494 /* MoyaViewModel.swift */,
 			);
 			name = Moya;
 			path = Modules/Moya;

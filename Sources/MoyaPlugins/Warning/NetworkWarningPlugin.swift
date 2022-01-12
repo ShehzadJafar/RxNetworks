@@ -16,7 +16,7 @@ public final class NetworkWarningPlugin {
     public init() { }
 }
 
-extension NetworkWarningPlugin: PluginType {
+extension NetworkWarningPlugin: PluginSubType {
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
         switch result {
