@@ -18,19 +18,26 @@ This module is based on the Moya encapsulated network API architecture.
 
 - Mainly divided into 3 parts:
     - [NetworkConfig](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkConfig.swift): Set the configuration information at the beginning of the program.
-        - baseURL: Root path address to base URL.
-        - baseParameters: Default basic parameters, like: userID, token, etc.
-        - baseMethod: Default request method type.
-        - updateBaseParametersWithValue: Update default base parameter value.
+        - **baseURL**: Root path address to base URL.
+        - **baseParameters**: Default basic parameters, like: userID, token, etc.
+        - **baseMethod**: Default request method type.
+        - **updateBaseParametersWithValue**: Update default base parameter value.
     - [RxMoyaProvider](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/RxMoyaProvider.swift): Add responsiveness to network requests, returning `Single` sequence.
+    - [NetworkUtil](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkUtil.swift): Network related functions
+         - **defaultPlugin**: Add default plugin.
+         - **transformAPISingleJSON**: Transforms a `Single` sequence object.
+         - **handyConfigurationPlugin**: Handles configuration plugins.
+	- [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/PluginSubType.swift): Inherit and replace the Moya plug-in protocol to facilitate subsequent expansion.
+         - **configuration**: After setting the network configuration information, before starting to prepare the request, this method can be used in scenarios such as key invalidation, re-acquiring the key and then automatically re-requesting the network.
+         - **autoAgainRequest**: Automatically re-open the last failed network request, this method can be used in scenarios such as key failure to obtain the key again and then automatically re-request the network.
     - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI.swift): Add protocol attributes and encapsulate basic network requests based on TargetType.
-        - ip: Root path address to base URL.
-        - parameters: Request parameters.
-        - plugins: Set network plugins.
-        - stubBehavior: Whether to take the test data.
-        - request: Network request method and return a Single sequence object.
+        - **ip**: Root path address to base URL.
+        - **parameters**: Request parameters.
+        - **plugins**: Set network plugins.
+        - **stubBehavior**: Whether to take the test data.
+        - **request**: Network request method and return a Single sequence object.
 
-🌰 - Example 1:
+🎷 - Example 1:
 
 ```
 class MoyaViewModel: NSObject {
@@ -58,7 +65,7 @@ class MoyaViewModel: NSObject {
 }
 ```
 
-🌰 - Example 2:
+🎷 - Example 2:
 
 ```
 enum LoadingAPI {
@@ -105,7 +112,7 @@ class LoadingViewModel: NSObject {
 }
 ```
 
-🌰 - Example 3:
+🎷 - Example 3:
 
 ```
 class CacheViewModel: NSObject {
@@ -174,10 +181,10 @@ This module is based on `HandyJSON` package network data parsing
     - [HandyDataModel](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyDataModel.swift): Network outer data model
     - [HandyJSONError](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyJSONError.swift): Parse error related
     - [RxHandyJSON](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/RxHandyJSON.swift): HandyJSON data parsing, currently provides two parsing solutions
-        - Option 1: Combine `HandyDataModel` model to parse out data.
-        - Option 2: Parse the data of the specified key according to `keyPath`, the precondition is that the json data source must be in the form of a dictionary.
+        - **Option 1**: Combine `HandyDataModel` model to parse out data.
+        - **Option 2**: Parse the data of the specified key according to `keyPath`, the precondition is that the json data source must be in the form of a dictionary.
 
-🌰 - Example of use in conjunction with the network part:
+🎷 - Example of use in conjunction with the network part:
 
 ```
 func request(_ count: Int) -> Driver<[CacheModel]> {

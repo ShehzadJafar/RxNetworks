@@ -18,19 +18,26 @@
 
 - 主要分为3部分：
     - [NetworkConfig](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkConfig.swift)：在程序最开始处设置配置信息，全局通用
-        - baseURL：根路径地址
-        - baseParameters：默认基本参数，类似：userID，token等
-        - baseMethod：默认请求类型
-        - updateBaseParametersWithValue：更新默认基本参数数据
+        - **baseURL**：根路径地址
+        - **baseParameters**：默认基本参数，类似：userID，token等
+        - **baseMethod**：默认请求类型
+        - **updateBaseParametersWithValue**：更新默认基本参数数据
     - [RxMoyaProvider](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/RxMoyaProvider.swift)：对网络请求添加响应式，返回`Single`序列
+    - [NetworkUtil](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkUtil.swift)：网络相关函数
+        - **defaultPlugin**：添加默认插件
+        - **transformAPISingleJSON**：转换`Single`序列对象
+        - **handyConfigurationPlugin**：处理配置插件
+    - [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/PluginSubType.swift)：继承替换Moya插件协议，方便后序扩展
+        - **configuration**：设置网络配置信息之后，开始准备请求之前，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
+        - **autoAgainRequest**：自动再次开启上次失败的网络请求，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
     - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI.swift)：在`TargetType`基础上增加协议属性和封装基础网络请求
-        - ip：根路径地址
-        - parameters：请求参数
-        - plugins：插件
-        - stubBehavior：是否走测试数据
-        - request：网络请求方法
+        - **ip**：根路径地址
+        - **parameters**：请求参数
+        - **plugins**：插件
+        - **stubBehavior**：是否走测试数据
+        - **request**：网络请求方法
 
-🌰 - 使用示例1:
+🎷 - 使用示例1:
 
 ```
 class MoyaViewModel: NSObject {
@@ -58,7 +65,7 @@ class MoyaViewModel: NSObject {
 }
 ```
 
-🌰 - 使用示例2:
+🎷 - 使用示例2:
 
 ```
 enum LoadingAPI {
@@ -105,7 +112,7 @@ class LoadingViewModel: NSObject {
 }
 ```
 
-🌰 - 使用示例3:
+🎷 - 使用示例3:
 
 ```
 class CacheViewModel: NSObject {
@@ -174,10 +181,10 @@ var plugins: APIPlugins {
     - [HandyDataModel](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyDataModel.swift)：网络外层数据模型
     - [HandyJSONError](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyJSONError.swift)：解析错误相关
     - [RxHandyJSON](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/RxHandyJSON.swift)：HandyJSON数据解析，目前提供两种解析方案
-        - 方案1: 结合`HandyDataModel`模型使用解析出`data`数据
-        - 方案2: 根据`keyPath`解析出指定key的数据，前提条件数据源必须字典形式
+        - **方案1** - 结合`HandyDataModel`模型使用解析出`data`数据
+        - **方案2** - 根据`keyPath`解析出指定key的数据，前提条件数据源必须字典形式
 
-🌰 - 结合网络部分使用示例：
+🎷 - 结合网络部分使用示例：
 
 ```
 func request(_ count: Int) -> Driver<[CacheModel]> {
