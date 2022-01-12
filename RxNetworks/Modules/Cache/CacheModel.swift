@@ -14,6 +14,5 @@ struct CacheModel: HandyJSON {
     var id : Int?
     var title : String?
     var image : String?
-    var github : String?
     var url : String?
 }

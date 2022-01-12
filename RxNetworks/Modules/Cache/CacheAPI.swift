@@ -36,21 +36,21 @@ enum CacheAPI: NetworkAPI {
     var sampleData: Data {
         switch self {
         case .cache(let count):
-            let data: [String : Any] = [
+            var data: [String : Any] = [
                 "id": 7,
-                "title": "OC版本的Moya插件网络",
+                "title": "Network Framework",
                 "image": "https://upload-images.jianshu.io/upload_images/1933747-4bc58b5a94713f99.jpeg",
-                "github": "https://github.com/yangKJ/KJNetworkPlugin",
-                "url": "https://juejin.cn/post/7049193493326987295"
+                "url": "https://github.com/yangKJ/RxNetworks"
             ]
             var array: [[String : Any]] = []
-            for _ in 0..<count {
+            for index in 0..<count {
+                data["id"] = "\(index)"
                 array.append(data)
             }
             let dict: [String : Any] = [
                 "data": array,
                 "code": 200,
-                "msg": "successed."
+                "message": "successed."
             ]
             return dict.JSONString()!.data(using: String.Encoding.utf8)!
         }

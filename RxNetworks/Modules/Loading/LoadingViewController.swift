@@ -27,8 +27,8 @@ class LoadingViewController: BaseViewController<LoadingViewModel> {
     }
     
     func setupBindings() {
-        viewModel.data.subscribe { [weak self] text in
-            self?.textView.text = text
+        viewModel.data.subscribe { [weak self] dict in
+            self?.textView.text = dict["data"] as? String
         }.disposed(by: disposeBag)
         
         viewModel.loadData()

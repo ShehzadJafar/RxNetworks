@@ -15,7 +15,7 @@ enum LoadingAPI {
 extension LoadingAPI: NetworkAPI {
     
     var ip: APIHost {
-        return "https://www.httpbin.org"
+        return NetworkConfig.baseURL
     }
     
     var path: String {

@@ -14,16 +14,14 @@ class LoadingViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
-    let data = PublishRelay<String>()
+    let data = PublishRelay<NSDictionary>()
     
     func loadData() {
         LoadingAPI.test2("666").request()
             .asObservable()
-            .subscribe { [weak self] dict in
-                if let dict = dict.element as? [String: Any],
-                   let data = dict["data"] as? String {
-                    self?.data.accept(data)
-                }
+            .subscribe { [weak self] (event) in
+                guard let dict = event.element as? NSDictionary else { return }
+                self?.data.accept(dict)
             }.disposed(by: disposeBag)
     }
 }

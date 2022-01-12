@@ -16,6 +16,15 @@ class MoyaViewModel: NSObject {
     
     let data = PublishRelay<String>()
     
+    /// 请求配置
+    let APIProvider: MoyaProvider<MultiTarget> = {
+        let configuration = URLSessionConfiguration.default
+        configuration.headers = .default
+        configuration.timeoutIntervalForRequest = 30
+        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        return MoyaProvider<MultiTarget>(session: session)
+    }()
+    
     func loadData() {
         APIProvider.rx.request(api: MoyaAPI.test)
             .asObservable()
