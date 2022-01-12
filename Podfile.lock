@@ -9,30 +9,18 @@ PODS:
   - RxCocoa (6.2.0):
     - RxRelay (= 6.2.0)
     - RxSwift (= 6.2.0)
-  - RxNetworks (0.0.1):
-    - RxNetworks/HandyJSON (= 0.0.1)
-    - RxNetworks/MoyaNetwork (= 0.0.1)
-    - RxNetworks/MoyaPlugins (= 0.0.1)
   - RxNetworks/HandyJSON (0.0.1):
     - HandyJSON
     - RxSwift
   - RxNetworks/MoyaNetwork (0.0.1):
     - Moya
     - RxSwift
-  - RxNetworks/MoyaPlugins (0.0.1):
-    - RxNetworks/MoyaPlugins/Cache (= 0.0.1)
-    - RxNetworks/MoyaPlugins/Indicator (= 0.0.1)
-    - RxNetworks/MoyaPlugins/Loading (= 0.0.1)
-    - RxNetworks/MoyaPlugins/Warning (= 0.0.1)
   - RxNetworks/MoyaPlugins/Cache (0.0.1):
     - RxNetworks/MoyaNetwork
     - YYCache
   - RxNetworks/MoyaPlugins/Indicator (0.0.1):
     - RxNetworks/MoyaNetwork
   - RxNetworks/MoyaPlugins/Loading (0.0.1):
-    - MBProgressHUD
-    - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Warning (0.0.1):
     - MBProgressHUD
     - RxNetworks/MoyaNetwork
   - RxRelay (6.2.0):
@@ -42,7 +30,11 @@ PODS:
 
 DEPENDENCIES:
   - RxCocoa
-  - RxNetworks (from `./`)
+  - RxNetworks/HandyJSON (from `./`)
+  - RxNetworks/MoyaNetwork (from `./`)
+  - RxNetworks/MoyaPlugins/Cache (from `./`)
+  - RxNetworks/MoyaPlugins/Indicator (from `./`)
+  - RxNetworks/MoyaPlugins/Loading (from `./`)
 
 SPEC REPOS:
   trunk:
@@ -65,11 +57,11 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
-  RxNetworks: 16d3b8a6eb1df8b8cce05e86df30fed668747e4a
+  RxNetworks: 208e2ccc16e9a0aa721a77a0e42651251f791524
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
 
-PODFILE CHECKSUM: 2c8457a9f7bb34d2d014c23f26c6491ffbbf7a1c
+PODFILE CHECKSUM: 5985e8d1e90aade2c8935a29ca3484bdf17ade6b
 
 COCOAPODS: 1.11.2

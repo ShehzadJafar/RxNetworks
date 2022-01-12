@@ -46,6 +46,10 @@ Pod::Spec.new do |s|
     xx.subspec 'Indicator' do |xxx|
       xxx.source_files = 'Sources/MoyaPlugins/Indicator/*.swift'
       xxx.dependency 'RxNetworks/MoyaNetwork'
+      xxx.pod_target_xcconfig = {
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Indicator',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Indicator=1'
+      }
     end
     xx.subspec 'Loading' do |xxx|
       xxx.source_files = 'Sources/MoyaPlugins/Loading/*.swift'

@@ -39,17 +39,16 @@ extension NetworkAPI {
     /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
     /// - Returns: Single sequence JSON object.
     public func request(callbackQueue: DispatchQueue? = nil) -> APISingleJSON {
+        var tempPlugins: APIPlugins = self.plugins
+        NetworkUtil.defaultPlugin(&tempPlugins)
+        
         let configuration = URLSessionConfiguration.default
         configuration.headers = .default
         configuration.timeoutIntervalForRequest = 30
         let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        #if canImport(NetworkIndicatorPlugin)
-        let Indicator = NetworkIndicatorPlugin.init()
-        plugins.insert(Indicator, at: 0)
-        #endif
         let MoyaProvider = MoyaProvider<MultiTarget>(stubClosure: { _ in
             return stubBehavior
-        }, session: session, plugins: plugins)
+        }, session: session, plugins: tempPlugins)
         return MoyaProvider.rx.request(api: self, callbackQueue: callbackQueue)
     }
 }

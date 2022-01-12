@@ -57,6 +57,10 @@
             "RxNetworks/MoyaNetwork": [
 
             ]
+          },
+          "pod_target_xcconfig": {
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RxNetworks_MoyaPlugins_Indicator",
+            "GCC_PREPROCESSOR_DEFINITIONS": "RxNetworks_MoyaPlugins_Indicator=1"
           }
         },
         {
