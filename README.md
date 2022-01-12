@@ -9,22 +9,199 @@
 
 -------
 
-English | [**简体中文**](#简体中文)
+English | [**简体中文**](README_CN.md)
 
 This is a set of infrastructure based on `RxSwift + Moya`
 
 ### MoyaNetwork
-- Based on Moya encapsulation network architecture.
+This module is based on the Moya encapsulated network API architecture.
+
+- Mainly divided into 3 parts:
+    - [NetworkConfig](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkConfig.swift): Set the configuration information at the beginning of the program.
+        - baseURL: Root path address to base URL.
+        - baseParameters: Default basic parameters, like: userID, token, etc.
+        - baseMethod: Default request method type.
+        - updateBaseParametersWithValue: Update default base parameter value.
+    - [RxMoyaProvider](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/RxMoyaProvider.swift): Add responsiveness to network requests, returning `Single` sequence.
+    - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI.swift): Add protocol attributes and encapsulate basic network requests based on TargetType.
+        - ip: Root path address to base URL.
+        - parameters: Request parameters.
+        - plugins: Set network plugins.
+        - stubBehavior: Whether to take the test data.
+        - request: Network request method and return a Single sequence object.
+
+🌰 - Example 1:
+
+```
+class MoyaViewModel: NSObject {
+    
+    let disposeBag = DisposeBag()
+    
+    let data = PublishRelay<String>()
+    
+    /// Request configuration
+    let APIProvider: MoyaProvider<MultiTarget> = {
+        let configuration = URLSessionConfiguration.default
+        configuration.headers = .default
+        configuration.timeoutIntervalForRequest = 30
+        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        return MoyaProvider<MultiTarget>(session: session)
+    }()
+    
+    func loadData() {
+        APIProvider.rx.request(api: MoyaAPI.test)
+            .asObservable()
+            .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
+            .bind(to: data)
+            .disposed(by: disposeBag)
+    }
+}
+```
+
+🌰 - Example 2:
+
+```
+enum LoadingAPI {
+    case test2(String)
+}
+
+extension LoadingAPI: NetworkAPI {
+    
+    var ip: APIHost {
+        return NetworkConfig.baseURL
+    }
+    
+    var path: String {
+        return "/post"
+    }
+    
+    var parameters: APIParameters? {
+        switch self {
+        case .test2(let string): return ["key": string]
+        }
+    }
+    
+    var plugins: APIPlugins {
+        let loading = NetworkLoadingPlugin.init()
+        return [loading]
+    }
+}
+
+
+class LoadingViewModel: NSObject {
+    
+    let disposeBag = DisposeBag()
+    
+    let data = PublishRelay<NSDictionary>()
+    
+    func loadData() {
+        LoadingAPI.test2("666").request()
+            .asObservable()
+            .subscribe { [weak self] (event) in
+                guard let dict = event.element as? NSDictionary else { return }
+                self?.data.accept(dict)
+            }.disposed(by: disposeBag)
+    }
+}
+```
+
+🌰 - Example 3:
+
+```
+class CacheViewModel: NSObject {
+
+    let disposeBag = DisposeBag()
+    
+    struct Input {
+        let count: Int
+    }
+
+    struct Output {
+        let items: Driver<[CacheModel]>
+    }
+    
+    func transform(input: Input) -> Output {
+        let elements = BehaviorRelay<[CacheModel]>(value: [])
+        
+        let output = Output(items: elements.asDriver())
+        
+        request(input.count)
+            .asObservable()
+            .bind(to: elements)
+            .disposed(by: disposeBag)
+        
+        return output
+    }
+}
+
+extension CacheViewModel {
+    
+    func request(_ count: Int) -> Driver<[CacheModel]> {
+        CacheAPI.cache(count).request()
+            .asObservable()
+            .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
+            .compactMap { $0.data }
+            .observe(on: MainScheduler.instance) // the result is returned on the main thread
+            .delay(.seconds(1), scheduler: MainScheduler.instance) // delay 1 second to return
+            .asDriver(onErrorJustReturn: []) // return null at the moment of error
+    }
+}
+```
 
 ### MoyaPlugins
-- This module is based on the `Moya` packaged plugin series
-     - Cache: Cache plugin
-     - Loading: Loading plugins
-     - Indicator: indicator plugin
-     - Warning: Error prompt plugin
+This module is mainly based on moya package network related plug-ins
+
+- At present, 4 plug-ins have been packaged for you to use:
+    - [Cache](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Cache/NetworkCachePlugin.swift): Network Data Cache Plugin
+    - [Loading](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Loading/NetworkLoadingPlugin.swift): Load animation plugin
+    - [Indicator](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Indicator/NetworkIndicatorPlugin.swift): Indicator plugin
+    - [Warning](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaPlugins/Warning/NetworkWarningPlugin.swift): Network failure prompt plugin
+
+🏠 - Simple to use, implement the protocol method in the API protocol, and then add the plugin to it:
+
+```
+var plugins: APIPlugins {
+    let cache = NetworkCachePlugin(cacheType: .networkElseCache)
+    let loading = NetworkLoadingPlugin.init(delayHideHUD: 0.5)
+    return [loading, cache]
+}
+```
 
 ### HandyJSON
-- Analytical model.
+This module is based on `HandyJSON` package network data parsing
+
+- Roughly divided into the following 3 parts:
+    - [HandyDataModel](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyDataModel.swift): Network outer data model
+    - [HandyJSONError](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/HandyJSONError.swift): Parse error related
+    - [RxHandyJSON](https://github.com/yangKJ/RxNetworks/blob/master/Sources/HandyJSON/RxHandyJSON.swift): HandyJSON data parsing, currently provides two parsing solutions
+        - Option 1: Combine `HandyDataModel` model to parse out data.
+        - Option 2: Parse the data of the specified key according to `keyPath`, the precondition is that the json data source must be in the form of a dictionary.
+
+🌰 - Example of use in conjunction with the network part:
+
+```
+func request(_ count: Int) -> Driver<[CacheModel]> {
+    CacheAPI.cache(count).request()
+        .asObservable()
+        .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
+        .compactMap { $0.data }
+        .observe(on: MainScheduler.instance)
+        .delay(.seconds(1), scheduler: MainScheduler.instance)
+        .asDriver(onErrorJustReturn: [])
+}
+```
+
+### CocoaPods Install
+```
+Ex: Import Network Architecture API
+- pod 'RxNetworks/MoyaNetwork'
+
+Ex: Import Model Anslysis 
+- pod 'RxNetworks/HandyJSON'
+
+Ex: Import loading animation plugin
+- pod 'RxNetworks/MoyaPlugins/Loading'
+```
 
 ### Remarks
 
@@ -44,44 +221,5 @@ This is a set of infrastructure based on `RxSwift + Moya`
 
 ### License
 RxNetworks is available under the [MIT](LICENSE) license. See the [LICENSE](LICENSE) file for more info.
-
------
-
-## <a id="简体中文"></a>简体中文
-
-基于 **RxSwift + Moya** 搭建响应式数据绑定网络API架构
-
-### MoyaNetwork
-- 该模块是基于`Moya`封装的网络API架构
-
-### MoyaPlugins
-- 该模块是基于`Moya`封装插件系列
-    - Cache：缓存插件
-    - Loading：加载动画插件
-    - Indicator：指示器插件
-    - Warning：错误提示插件
-    
-### HandyJSON
-- 该模块是基于`HandyJSON`封装网络数据解析
-
-### CocoaPods Install
-```
-Ex: 导入网络架构API
-- pod 'RxNetworks/MoyaNetwork'
-
-Ex: 导入数据解析
-- pod 'RxNetworks/HandyJSON'
-
-Ex: 导入加载动画插件
-- pod 'RxNetworks/MoyaPlugins/Loading'
-```
-
------
-
-> <font color=red>**觉得有帮助的老哥们，请帮忙点个星 ⭐..**</font>
-
-**救救孩子吧，谢谢各位老板。**
-
-🥺
 
 -----
