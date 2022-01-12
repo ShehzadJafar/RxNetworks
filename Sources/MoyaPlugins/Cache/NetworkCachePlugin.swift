@@ -18,9 +18,9 @@ public enum NetworkCacheType {
     /** 先从网络获取数据，同时会在本地缓存数据 */
     /** Get the data from the network first, and cache the data locally at the same time */
     case networkOnly
-    /** 先从缓存读取数据，如果没有再从网络获取，Moya的插件没找到怎么cancel掉后序网络 - -！ */
+    /** 先从缓存读取数据，如果没有再从网络获取 */
     /** Read the data from the cache first, if not, then get it from the network */
-    //case cacheElseNetwork
+    case cacheElseNetwork
     /** 先从网络获取数据，如果没有在从缓存获取，此处的没有可以理解为访问网络失败，再从缓存读取 */
     /** Get data from the network first, if not from the cache */
     case networkElseCache
@@ -55,12 +55,19 @@ public final class NetworkCachePlugin {
     }
 }
 
-extension NetworkCachePlugin: PluginType {
+extension NetworkCachePlugin: PluginSubType {
+    
+    public func configuration(_ result: MoyaResultable, target: TargetType, endRequest: Bool) -> kEndResultTuple {
+        if self.cacheType == NetworkCacheType.cacheElseNetwork, let response = self.readCacheResponse(target) {
+            return (.success(response), true)
+        }
+        return (result, endRequest)
+    }
     
     public func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {
         if self.cacheType == NetworkCacheType.cacheThenNetwork {
-            if let completion = completion, let cacheResponse = self.readCacheResponse(target) {
-                completion(.success(cacheResponse))
+            if let completion = completion, let response = self.readCacheResponse(target) {
+                completion(.success(response))
             }
         }
         return request
@@ -70,7 +77,9 @@ extension NetworkCachePlugin: PluginType {
         switch result {
         case .success(let response):
             switch self.cacheType {
-            case NetworkCacheType.networkElseCache, NetworkCacheType.cacheThenNetwork:
+            case NetworkCacheType.networkElseCache,
+                NetworkCacheType.cacheThenNetwork,
+                NetworkCacheType.cacheElseNetwork:
                 self.saveCacheResponse(response, target: target)
             default:
                 break
