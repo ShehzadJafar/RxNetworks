@@ -28,6 +28,8 @@ Pod::Spec.new do |s|
   s.swift_version    = '5.0'
   s.requires_arc     = true
   s.static_framework = true
+  s.module_name      = 'RxNetworks'
+  s.ios.source_files = 'Sources/RxNetworks.swift'
 
   s.subspec 'MoyaNetwork' do |xx|
     xx.source_files = 'Sources/MoyaNetwork/*.swift'

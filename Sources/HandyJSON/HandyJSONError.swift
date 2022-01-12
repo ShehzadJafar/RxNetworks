@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum HandyJSONError: Swift.Error {
+@frozen public enum HandyJSONError: Swift.Error {
     case mapModel, mapArray
     case mapCode(Int)
 }

@@ -84,8 +84,8 @@
 			isa = PBXGroup;
 			children = (
 				04233507278E61DE00547494 /* LoadingAPI.swift */,
-				04233508278E61DE00547494 /* LoadingViewModel.swift */,
 				04233509278E61DE00547494 /* LoadingViewController.swift */,
+				04233508278E61DE00547494 /* LoadingViewModel.swift */,
 			);
 			name = Loading;
 			path = Modules/Loading;

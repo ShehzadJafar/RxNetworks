@@ -22,6 +22,10 @@
   "swift_versions": "5.0",
   "requires_arc": true,
   "static_framework": true,
+  "module_name": "RxNetworks",
+  "ios": {
+    "source_files": "Sources/RxNetworks.swift"
+  },
   "subspecs": [
     {
       "name": "MoyaNetwork",

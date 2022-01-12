@@ -10,7 +10,7 @@ import Moya
 
 public typealias MoyaResultable = Result<Moya.Response, MoyaError>?
 public typealias kEndResultTuple = (result: MoyaResultable, endRequest: Bool)
-public typealias kAnginRequestTuple = (result: MoyaResultable, againRequest: Bool)
+public typealias kAgainRequestTuple = (result: MoyaResultable, againRequest: Bool)
 
 /// 继承Moya插件协议，方便后序扩展，所有插件方法都必须实现该协议
 /// Inherit the Moya plug-in protocol, which is convenient for subsequent expansion. All plug-in methods must implement this protocol
@@ -48,7 +48,7 @@ public protocol PluginSubType: PluginType {
     ///   - target: The protocol used to define the specifications necessary for a `MoyaProvider`.
     ///   - againRequest: Whether to network again.
     /// - Returns: A tuple containing the data source and whether to start the last network request again.
-    func autoAgainRequest(_ result: MoyaResultable, target: TargetType, againRequest: Bool) -> kAnginRequestTuple
+    func autoAgainRequest(_ result: MoyaResultable, target: TargetType, againRequest: Bool) -> kAgainRequestTuple
 }
 
 public extension PluginSubType {
@@ -57,7 +57,7 @@ public extension PluginSubType {
         return (result, endRequest)
     }
     
-    func autoAgainRequest(_ result: MoyaResultable, target: TargetType, againRequest: Bool) -> kAnginRequestTuple{
+    func autoAgainRequest(_ result: MoyaResultable, target: TargetType, againRequest: Bool) -> kAgainRequestTuple{
         return (result, againRequest)
     }
 }

@@ -57,7 +57,7 @@ internal struct NetworkUtil {
         return (result, endRequest)
     }
     
-    static func handyAutoAnginRequestPlugin(_ plugins: APIPlugins, target: TargetType, single: APISingleJSON) -> Bool {
+    static func handyAutoAgainRequestPlugin(_ plugins: APIPlugins, target: TargetType, single: APISingleJSON) -> Bool {
 
         // TODO: 项目暂时未使用，有时间再来完善
         // TODO: The project has not been used for the time being, and it will be improved when there is time.

@@ -20,8 +20,9 @@ class LoadingViewModel: NSObject {
         LoadingAPI.test2("666").request()
             .asObservable()
             .subscribe { [weak self] (event) in
-                guard let dict = event.element as? NSDictionary else { return }
-                self?.data.accept(dict)
+                if let dict = event.element as? NSDictionary {
+                    self?.data.accept(dict)
+                }
             }.disposed(by: disposeBag)
     }
 }
