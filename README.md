@@ -36,18 +36,22 @@ This module is based on the Moya encapsulated network API architecture.
         - **plugins**: Set network plugins.
         - **stubBehavior**: Whether to take the test data.
         - **request**: Network request method and return a Single sequence object.
-	- [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPIOO.swift): object-oriented converter, protocol-oriented mode to object-oriented, convenient for friends who are used to OC thinking
+	- [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPIOO.swift): OOP converter, MVP to OOP, convenient for friends who are used to OC thinking
         - **cdy_ip**: Root path address to base URL.
         - **cdy_path**: Request path.
         - **cdy_parameters**: Request parameters.
         - **cdy_plugins**: Set network plugins.
-        - **cdy_stubBehavior**: Whether to walk the test data.
+        - **cdy_testJSON**: Network testing json string.
+        - **cdy_testTime**: Network test data return time, the default is half a second.
         - **cdy_HTTPRequest**: Network request method and return a Single sequence object.
+    - [NetworkDebugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkDebugging.swift)：Debug print mode
+        - **openDebugRequest**：Enable print request information.
+        - **openDebugResponse**：Turn on printing the response result.
 
 🎷 - OO Example 1:
 
 ```
-class MoyaViewModel: NSObject {
+class OOViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     

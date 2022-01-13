@@ -41,13 +41,17 @@
         - **cdy_path**：请求路径
         - **cdy_parameters**：请求参数
         - **cdy_plugins**：插件
-        - **cdy_stubBehavior**：是否走测试数据
+        - **cdy_testJSON**：测试数据
+        - **cdy_testTime**：测试数据返回时间，默认半秒
         - **cdy_HTTPRequest**：网络请求方法
+    - [NetworkDebugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkDebugging.swift)：调试打印模式
+        - **openDebugRequest**：开启请求打印
+        - **openDebugResponse**：开启结果打印
 
 🎷 - 面向对象使用示例1:
 
 ```
-class MoyaViewModel: NSObject {
+class OOViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
