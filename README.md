@@ -36,8 +36,15 @@ This module is based on the Moya encapsulated network API architecture.
         - **plugins**: Set network plugins.
         - **stubBehavior**: Whether to take the test data.
         - **request**: Network request method and return a Single sequence object.
+	- [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPIOO.swift): object-oriented converter, protocol-oriented mode to object-oriented, convenient for friends who are used to OC thinking
+        - **cdy_ip**: Root path address to base URL.
+        - **cdy_path**: Request path.
+        - **cdy_parameters**: Request parameters.
+        - **cdy_plugins**: Set network plugins.
+        - **cdy_stubBehavior**: Whether to walk the test data.
+        - **cdy_HTTPRequest**: Network request method and return a Single sequence object.
 
-🎷 - Example 1:
+🎷 - OO Example 1:
 
 ```
 class MoyaViewModel: NSObject {
@@ -46,17 +53,14 @@ class MoyaViewModel: NSObject {
     
     let data = PublishRelay<String>()
     
-    /// Request configuration
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        return MoyaProvider<MultiTarget>(session: session)
-    }()
-    
     func loadData() {
-        APIProvider.rx.request(api: MoyaAPI.test)
+        var api = NetworkAPIOO.init()
+        api.cdy_ip = NetworkConfig.baseURL
+        api.cdy_path = "/ip"
+        api.cdy_method = .get
+        api.cdy_plugins = [NetworkLoadingPlugin.init()]
+        
+        api.cdy_HTTPRequest()
             .asObservable()
             .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
             .bind(to: data)
@@ -65,7 +69,7 @@ class MoyaViewModel: NSObject {
 }
 ```
 
-🎷 - Example 2:
+🎷 - MVP Example 2:
 
 ```
 enum LoadingAPI {
@@ -87,11 +91,6 @@ extension LoadingAPI: NetworkAPI {
         case .test2(let string): return ["key": string]
         }
     }
-    
-    var plugins: APIPlugins {
-        let loading = NetworkLoadingPlugin.init()
-        return [loading]
-    }
 }
 
 
@@ -101,18 +100,29 @@ class LoadingViewModel: NSObject {
     
     let data = PublishRelay<NSDictionary>()
     
+    /// Configure the loading animation plugin
+    let APIProvider: MoyaProvider<MultiTarget> = {
+        let configuration = URLSessionConfiguration.default
+        configuration.headers = .default
+        configuration.timeoutIntervalForRequest = 30
+        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        let loading = NetworkLoadingPlugin.init()
+        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
+    }()
+    
     func loadData() {
-        LoadingAPI.test2("666").request()
+        APIProvider.rx.request(api: LoadingAPI.test2("666"))
             .asObservable()
             .subscribe { [weak self] (event) in
-                guard let dict = event.element as? NSDictionary else { return }
-                self?.data.accept(dict)
+                if let dict = event.element as? NSDictionary {
+                    self?.data.accept(dict)
+                }
             }.disposed(by: disposeBag)
     }
 }
 ```
 
-🎷 - Example 3:
+🎷 - MVVM Example 3:
 
 ```
 class CacheViewModel: NSObject {
@@ -148,9 +158,9 @@ extension CacheViewModel {
             .asObservable()
             .mapHandyJSON(HandyDataModel<[CacheModel]>.self)
             .compactMap { $0.data }
-            .observe(on: MainScheduler.instance) // the result is returned on the main thread
-            .delay(.seconds(1), scheduler: MainScheduler.instance) // delay 1 second to return
-            .asDriver(onErrorJustReturn: []) // return null at the moment of error
+            .observe(on: MainScheduler.instance)
+            .delay(.seconds(1), scheduler: MainScheduler.instance) 
+            .asDriver(onErrorJustReturn: [])
     }
 }
 ```

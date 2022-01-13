@@ -36,8 +36,15 @@
         - **plugins**：插件
         - **stubBehavior**：是否走测试数据
         - **request**：网络请求方法
+    - [NetworkAPIOO](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPIOO.swift)：面向对象转换器，面向协议模式转面向对象，方便习惯OC思维的小伙伴
+        - **cdy_ip**：根路径地址
+        - **cdy_path**：请求路径
+        - **cdy_parameters**：请求参数
+        - **cdy_plugins**：插件
+        - **cdy_stubBehavior**：是否走测试数据
+        - **cdy_HTTPRequest**：网络请求方法
 
-🎷 - 使用示例1:
+🎷 - 面向对象使用示例1:
 
 ```
 class MoyaViewModel: NSObject {
@@ -46,17 +53,14 @@ class MoyaViewModel: NSObject {
     
     let data = PublishRelay<String>()
     
-    /// 请求配置
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        return MoyaProvider<MultiTarget>(session: session)
-    }()
-    
     func loadData() {
-        APIProvider.rx.request(api: MoyaAPI.test)
+        var api = NetworkAPIOO.init()
+        api.cdy_ip = NetworkConfig.baseURL
+        api.cdy_path = "/ip"
+        api.cdy_method = .get
+        api.cdy_plugins = [NetworkLoadingPlugin.init()]
+        
+        api.cdy_HTTPRequest()
             .asObservable()
             .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
             .bind(to: data)
@@ -65,7 +69,7 @@ class MoyaViewModel: NSObject {
 }
 ```
 
-🎷 - 使用示例2:
+🎷 - MVP使用示例2:
 
 ```
 enum LoadingAPI {
@@ -87,11 +91,6 @@ extension LoadingAPI: NetworkAPI {
         case .test2(let string): return ["key": string]
         }
     }
-    
-    var plugins: APIPlugins {
-        let loading = NetworkLoadingPlugin.init()
-        return [loading]
-    }
 }
 
 
@@ -101,18 +100,29 @@ class LoadingViewModel: NSObject {
     
     let data = PublishRelay<NSDictionary>()
     
+    /// 配置加载动画插件
+    let APIProvider: MoyaProvider<MultiTarget> = {
+        let configuration = URLSessionConfiguration.default
+        configuration.headers = .default
+        configuration.timeoutIntervalForRequest = 30
+        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        let loading = NetworkLoadingPlugin.init()
+        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
+    }()
+    
     func loadData() {
-        LoadingAPI.test2("666").request()
+        APIProvider.rx.request(api: LoadingAPI.test2("666"))
             .asObservable()
             .subscribe { [weak self] (event) in
-                guard let dict = event.element as? NSDictionary else { return }
-                self?.data.accept(dict)
+                if let dict = event.element as? NSDictionary {
+                    self?.data.accept(dict)
+                }
             }.disposed(by: disposeBag)
     }
 }
 ```
 
-🎷 - 使用示例3:
+🎷 - MVVM使用示例3:
 
 ```
 class CacheViewModel: NSObject {
