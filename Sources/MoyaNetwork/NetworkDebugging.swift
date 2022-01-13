@@ -64,7 +64,7 @@ extension NetworkDebugging {
         formatter.locale = Locale(identifier: "zh_CN")
         let date = formatter.string(from: Date())
         print("""
-              ------- 🎈 网络数据响应 🎈 -------
+              ------- 🎈 数据响应 🎈 -------
               当前时间: \(date)
               是否成功: \(success ? "Successed." : "Failed.")
               数据类型: \(cache ? "Local data." : "Remote data.")

@@ -30,8 +30,8 @@ internal struct NetworkUtil {
                     do {
                         let response = try response.filterSuccessfulStatusCodes()
                         let json = try response.mapJSON()
-                        single(.success(json))
                         NetworkDebugging.DebuggingResponse(json, true, true)
+                        single(.success(json))
                     } catch MoyaError.jsonMapping(let response) {
                         let error = MoyaError.jsonMapping(response)
                         NetworkDebugging.DebuggingResponse(error.localizedDescription, true, false)
