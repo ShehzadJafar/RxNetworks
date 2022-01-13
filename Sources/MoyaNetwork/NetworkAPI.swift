@@ -42,6 +42,7 @@ extension NetworkAPI {
         var tempPlugins: APIPlugins = self.plugins
         NetworkUtil.defaultPlugin(&tempPlugins)
         
+        NetworkDebugging.DebuggingRequest(self)
         let target = MultiTarget.target(self)
 
         let (result, end) = NetworkUtil.handyConfigurationPlugin(tempPlugins, target: target)
@@ -96,9 +97,8 @@ extension NetworkAPI {
         return NetworkConfig.baseMethod
     }
     
-    /// 测试数据
     public var sampleData: Data {
-        return "{\"key\":\"x123\"}".data(using: String.Encoding.utf8)!
+        return "{\"Condy\":\"ykj310@126.com\"}".data(using: String.Encoding.utf8)!
     }
     
     public var headers: [String : String]? {

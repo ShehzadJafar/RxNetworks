@@ -22,20 +22,50 @@ public struct NetworkAPIOO {
     public var cdy_method: APIMethod?
     /// 插件
     public var cdy_plugins: APIPlugins?
-    /// 是否走测试数据
-    public var cdy_stubBehavior: APIStubBehavior?
+    /// 测试数据，该属性设置值之后就只走该测试数据
+    public var cdy_testJSON: String?
+    /// 测试数据返回时间，默认半秒
+    public var cdy_testTime: TimeInterval = 0.5
     
-    /// 网络请求
+    /// OOP Network request.
+    /// Example:
+    ///
+    ///     var api = NetworkAPIOO.init()
+    ///     api.cdy_ip = "https://www.httpbin.org"
+    ///     api.cdy_path = "/ip"
+    ///     api.cdy_method = APIMethod.get
+    ///     api.cdy_plugins = [NetworkLoadingPlugin.init()]
+    ///     api.cdy_testJSON = "{\"Condy\":\"ykj310@126.com\"}"
+    ///
+    ///     api.cdy_HTTPRequest()
+    ///         .asObservable()
+    ///         .observe(on: MainScheduler.instance)
+    ///         .subscribe { (data) in
+    ///             print("\(data)")
+    ///         } onError: { (error) in
+    ///             print("Network failed: \(error.localizedDescription)")
+    ///         }
+    ///         .disposed(by: disposeBag)
+    ///
     /// - Parameter callbackQueue: Callback queue. If nil - queue from provider initializer will be used.
     /// - Returns: Single sequence JSON object.
-    public func cdy_HTTPRequest(callbackQueue: DispatchQueue? = nil) -> APISingleJSON {
+    public func cdy_HTTPRequest(_ callbackQueue: DispatchQueue? = nil) -> APISingleJSON {
         var api = NetworkObjectAPI.init()
         api.cdy_ip = cdy_ip
         api.cdy_path = cdy_path
         api.cdy_parameters = cdy_parameters
         api.cdy_method = cdy_method
         api.cdy_plugins = cdy_plugins
-        api.cdy_stubBehavior = cdy_stubBehavior
+        if let json = cdy_testJSON {
+            api.cdy_test = json
+            if cdy_testTime > 0 {
+                api.cdy_stubBehavior = StubBehavior.delayed(seconds: cdy_testTime)
+            } else {
+                api.cdy_stubBehavior = StubBehavior.immediate
+            }
+        } else {
+            api.cdy_stubBehavior = StubBehavior.never
+        }
         return api.request(callbackQueue: callbackQueue)
     }
     
@@ -51,6 +81,7 @@ internal struct NetworkObjectAPI: NetworkAPI {
     var cdy_method: APIMethod?
     var cdy_plugins: APIPlugins?
     var cdy_stubBehavior: APIStubBehavior?
+    var cdy_test: String?
     
     public var ip: APIHost {
         if let cdy_ip = cdy_ip {
@@ -86,5 +117,12 @@ internal struct NetworkObjectAPI: NetworkAPI {
             return cdy_stubBehavior
         }
         return StubBehavior.never
+    }
+    
+    public var sampleData: Data {
+        if let json = cdy_test {
+            return json.data(using: String.Encoding.utf8)!
+        }
+        return "{\"Condy\":\"ykj310@126.com\"}".data(using: String.Encoding.utf8)!
     }
 }

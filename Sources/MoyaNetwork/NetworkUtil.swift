@@ -31,14 +31,21 @@ internal struct NetworkUtil {
                         let response = try response.filterSuccessfulStatusCodes()
                         let json = try response.mapJSON()
                         single(.success(json))
+                        NetworkDebugging.DebuggingResponse(json, true, true)
                     } catch MoyaError.jsonMapping(let response) {
-                        single(.failure(MoyaError.jsonMapping(response)))
+                        let error = MoyaError.jsonMapping(response)
+                        NetworkDebugging.DebuggingResponse(error.localizedDescription, true, false)
+                        single(.failure(error))
                     } catch MoyaError.statusCode(let response) {
-                        single(.failure(MoyaError.statusCode(response)))
+                        let error = MoyaError.statusCode(response)
+                        NetworkDebugging.DebuggingResponse(error.localizedDescription, true, false)
+                        single(.failure(error))
                     } catch {
+                        NetworkDebugging.DebuggingResponse(error.localizedDescription, true, false)
                         single(.failure(error))
                     }
                 case let .failure(error):
+                    NetworkDebugging.DebuggingResponse(error.localizedDescription, true, false)
                     single(.failure(error))
                 }
             }
@@ -49,7 +56,7 @@ internal struct NetworkUtil {
     static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> kEndResultTuple {
         var result: MoyaResultable = nil
         var endRequest = false
-        for plugin in plugins {
+        plugins.forEach { (plugin) in
             let (_result, end) = plugin.configuration(result, target: target, endRequest: endRequest)
             result = _result
             endRequest = end

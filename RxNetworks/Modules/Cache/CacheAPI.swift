@@ -30,7 +30,7 @@ enum CacheAPI: NetworkAPI {
     }
     
     var stubBehavior: APIStubBehavior {
-        return .immediate
+        return .delayed(seconds: 0.5)
     }
     
     var sampleData: Data {
@@ -52,21 +52,7 @@ enum CacheAPI: NetworkAPI {
                 "code": 200,
                 "message": "successed."
             ]
-            return dict.JSONString()!.data(using: String.Encoding.utf8)!
+            return RxNetworks.toJSON(form: dict)!.data(using: String.Encoding.utf8)!
         }
-    }
-}
-
-// MARK: 字典转字符串
-extension Dictionary {
-
-    public func JSONString() -> String? {
-        guard let data = try? JSONSerialization.data(withJSONObject: self, options: []) else {
-            return nil
-        }
-        guard let str = String(data: data, encoding: .utf8) else {
-            return nil
-        }
-        return str
     }
 }
