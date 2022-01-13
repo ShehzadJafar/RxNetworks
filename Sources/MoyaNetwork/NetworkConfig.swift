@@ -17,6 +17,7 @@ import RxSwift
 import Moya
 
 public typealias APIHost = String
+public typealias APIPath = String
 public typealias APIMethod = Moya.Method
 public typealias APIParameters = Alamofire.Parameters
 public typealias APIPlugins = [RxNetworks.PluginSubType]
