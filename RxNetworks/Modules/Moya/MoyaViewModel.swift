@@ -16,17 +16,14 @@ class MoyaViewModel: NSObject {
     
     let data = PublishRelay<String>()
     
-    /// 请求配置
-    let APIProvider: MoyaProvider<MultiTarget> = {
-        let configuration = URLSessionConfiguration.default
-        configuration.headers = .default
-        configuration.timeoutIntervalForRequest = 30
-        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
-        return MoyaProvider<MultiTarget>(session: session)
-    }()
-    
     func loadData() {
-        APIProvider.rx.request(api: MoyaAPI.test)
+        var api = NetworkAPIOO.init()
+        api.cdy_ip = NetworkConfig.baseURL
+        api.cdy_path = "/ip"
+        api.cdy_method = .get
+        api.cdy_plugins = [NetworkLoadingPlugin.init()]
+        
+        api.cdy_HTTPRequest()
             .asObservable()
             .compactMap{ (($0 as! NSDictionary)["origin"] as? String) }
             .bind(to: data)

@@ -16,8 +16,18 @@ class LoadingViewModel: NSObject {
     
     let data = PublishRelay<NSDictionary>()
     
+    /// 配置加载动画插件
+    let APIProvider: MoyaProvider<MultiTarget> = {
+        let configuration = URLSessionConfiguration.default
+        configuration.headers = .default
+        configuration.timeoutIntervalForRequest = 30
+        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        let loading = NetworkLoadingPlugin.init()
+        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
+    }()
+    
     func loadData() {
-        LoadingAPI.test2("666").request()
+        APIProvider.rx.request(api: LoadingAPI.test2("666"))
             .asObservable()
             .subscribe { [weak self] (event) in
                 if let dict = event.element as? NSDictionary {
