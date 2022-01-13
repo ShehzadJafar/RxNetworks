@@ -16,7 +16,6 @@
 		04233514278E61DE00547494 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04233509278E61DE00547494 /* LoadingViewController.swift */; };
 		04233515278E61DE00547494 /* MoyaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423350B278E61DE00547494 /* MoyaViewModel.swift */; };
 		04233516278E61DE00547494 /* MoyaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423350C278E61DE00547494 /* MoyaViewController.swift */; };
-		04233517278E61DE00547494 /* MoyaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423350D278E61DE00547494 /* MoyaAPI.swift */; };
 		04233519278E620D00547494 /* README_CN.md in Resources */ = {isa = PBXBuildFile; fileRef = 04233518278E620D00547494 /* README_CN.md */; };
 		0423351B278E622400547494 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0423351A278E622400547494 /* README.md */; };
 		04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C05416278D66F0008BCC42 /* HomeViewModel.swift */; };
@@ -39,7 +38,6 @@
 		04233509278E61DE00547494 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		0423350B278E61DE00547494 /* MoyaViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoyaViewModel.swift; sourceTree = "<group>"; };
 		0423350C278E61DE00547494 /* MoyaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoyaViewController.swift; sourceTree = "<group>"; };
-		0423350D278E61DE00547494 /* MoyaAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoyaAPI.swift; sourceTree = "<group>"; };
 		04233518278E620D00547494 /* README_CN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_CN.md; sourceTree = SOURCE_ROOT; };
 		0423351A278E622400547494 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		04C05416278D66F0008BCC42 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -94,7 +92,6 @@
 		0423350A278E61DE00547494 /* Moya */ = {
 			isa = PBXGroup;
 			children = (
-				0423350D278E61DE00547494 /* MoyaAPI.swift */,
 				0423350C278E61DE00547494 /* MoyaViewController.swift */,
 				0423350B278E61DE00547494 /* MoyaViewModel.swift */,
 			);
@@ -323,7 +320,6 @@
 				04C05420278D6A49008BCC42 /* BaseViewController.swift in Sources */,
 				0423350E278E61DE00547494 /* CacheViewModel.swift in Sources */,
 				04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */,
-				04233517278E61DE00547494 /* MoyaAPI.swift in Sources */,
 				04233513278E61DE00547494 /* LoadingViewModel.swift in Sources */,
 				04233516278E61DE00547494 /* MoyaViewController.swift in Sources */,
 				04233514278E61DE00547494 /* LoadingViewController.swift in Sources */,
