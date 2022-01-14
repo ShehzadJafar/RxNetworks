@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RxNetworks'
-  s.version          = '0.0.4'
-  s.summary          = '👌. RxSwift + Moya + HandyJSON + Plugins'
+  s.version          = '0.0.5'
+  s.summary          = '👌. RxSwift + Moya + HandyJSON + Plugins.'
   
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -51,6 +51,14 @@ Pod::Spec.new do |s|
       xxx.pod_target_xcconfig = {
         'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Indicator',
         'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Indicator=1'
+      }
+    end
+    xx.subspec 'Debugging' do |xxx|
+      xxx.source_files = 'Sources/MoyaPlugins/Debugging/*.swift'
+      xxx.dependency 'RxNetworks/MoyaNetwork'
+      xxx.pod_target_xcconfig = {
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'RxNetworks_MoyaPlugins_Debugging',
+        'GCC_PREPROCESSOR_DEFINITIONS' => 'RxNetworks_MoyaPlugins_Debugging=1'
       }
     end
     xx.subspec 'Loading' do |xxx|

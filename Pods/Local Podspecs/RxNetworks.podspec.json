@@ -1,7 +1,7 @@
 {
   "name": "RxNetworks",
-  "version": "0.0.4",
-  "summary": "👌. RxSwift + Moya + HandyJSON + Plugins",
+  "version": "0.0.5",
+  "summary": "👌. RxSwift + Moya + HandyJSON + Plugins.",
   "homepage": "https://github.com/yangKJ/RxNetworks",
   "description": "https://github.com/yangKJ/RxNetworks/blob/master/README.md",
   "license": {
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/yangKJ/RxNetworks.git",
-    "tag": "0.0.4"
+    "tag": "0.0.5"
   },
   "social_media_url": "https://juejin.cn/user/1987535102554472/posts",
   "platforms": {
@@ -65,6 +65,19 @@
           "pod_target_xcconfig": {
             "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RxNetworks_MoyaPlugins_Indicator",
             "GCC_PREPROCESSOR_DEFINITIONS": "RxNetworks_MoyaPlugins_Indicator=1"
+          }
+        },
+        {
+          "name": "Debugging",
+          "source_files": "Sources/MoyaPlugins/Debugging/*.swift",
+          "dependencies": {
+            "RxNetworks/MoyaNetwork": [
+
+            ]
+          },
+          "pod_target_xcconfig": {
+            "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RxNetworks_MoyaPlugins_Debugging",
+            "GCC_PREPROCESSOR_DEFINITIONS": "RxNetworks_MoyaPlugins_Debugging=1"
           }
         },
         {
