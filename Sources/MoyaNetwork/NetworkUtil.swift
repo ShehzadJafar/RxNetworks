@@ -13,11 +13,15 @@ internal struct NetworkUtil {
     
     /// 默认指定插件
     /// - Parameter plugins: 插件数组
-    static func defaultPlugin(_ plugins: inout APIPlugins) {
+    static func defaultPlugin(_ plugins: inout APIPlugins, api: NetworkAPI) {
         var temp = plugins
         #if RxNetworks_MoyaPlugins_Indicator
         let Indicator = NetworkIndicatorPlugin.init()
         temp.insert(Indicator, at: 0)
+        #endif
+        #if RxNetworks_MoyaPlugins_Debugging
+        let Debugging = NetworkDebuggingPlugin(api: api)
+        temp.append(Debugging)
         #endif
         plugins = temp
     }
@@ -30,22 +34,15 @@ internal struct NetworkUtil {
                     do {
                         let response = try response.filterSuccessfulStatusCodes()
                         let json = try response.mapJSON()
-                        NetworkDebugging.DebuggingResponse(json, true, true)
                         single(.success(json))
                     } catch MoyaError.jsonMapping(let response) {
-                        let error = MoyaError.jsonMapping(response)
-                        NetworkDebugging.DebuggingResponse(error.localizedDescription, true, false)
-                        single(.failure(error))
+                        single(.failure(MoyaError.jsonMapping(response)))
                     } catch MoyaError.statusCode(let response) {
-                        let error = MoyaError.statusCode(response)
-                        NetworkDebugging.DebuggingResponse(error.localizedDescription, true, false)
-                        single(.failure(error))
+                        single(.failure(MoyaError.statusCode(response)))
                     } catch {
-                        NetworkDebugging.DebuggingResponse(error.localizedDescription, true, false)
                         single(.failure(error))
                     }
                 case let .failure(error):
-                    NetworkDebugging.DebuggingResponse(error.localizedDescription, true, false)
                     single(.failure(error))
                 }
             }
@@ -53,15 +50,12 @@ internal struct NetworkUtil {
         }
     }
     
-    static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> kEndResultTuple {
-        var result: MoyaResultable = nil
-        var endRequest = false
+    static func handyConfigurationPlugin(_ plugins: APIPlugins, target: TargetType) -> ConfigurationTuple {
+        var tuple: ConfigurationTuple = (nil, false)
         plugins.forEach { (plugin) in
-            let (_result, end) = plugin.configuration(result, target: target, endRequest: endRequest)
-            result = _result
-            endRequest = end
+            tuple = plugin.configuration(tuple, target: target)
         }
-        return (result, endRequest)
+        return tuple
     }
     
     static func handyAutoAgainRequestPlugin(_ plugins: APIPlugins, target: TargetType, single: APISingleJSON) -> Bool {

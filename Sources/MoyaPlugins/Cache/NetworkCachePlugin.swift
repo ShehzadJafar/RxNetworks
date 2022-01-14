@@ -57,11 +57,11 @@ public final class NetworkCachePlugin {
 
 extension NetworkCachePlugin: PluginSubType {
     
-    public func configuration(_ result: MoyaResultable, target: TargetType, endRequest: Bool) -> kEndResultTuple {
+    public func configuration(_ tuple: ConfigurationTuple, target: TargetType) -> ConfigurationTuple {
         if self.cacheType == NetworkCacheType.cacheElseNetwork, let response = self.readCacheResponse(target) {
             return (.success(response), true)
         }
-        return (result, endRequest)
+        return tuple
     }
     
     public func prepare(_ request: URLRequest, target: TargetType) -> URLRequest {

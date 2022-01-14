@@ -40,9 +40,8 @@ extension NetworkAPI {
     /// - Returns: Single sequence JSON object.
     public func request(callbackQueue: DispatchQueue? = nil) -> APISingleJSON {
         var tempPlugins: APIPlugins = self.plugins
-        NetworkUtil.defaultPlugin(&tempPlugins)
+        NetworkUtil.defaultPlugin(&tempPlugins, api: self)
         
-        NetworkDebugging.DebuggingRequest(self)
         let target = MultiTarget.target(self)
 
         let (result, end) = NetworkUtil.handyConfigurationPlugin(tempPlugins, target: target)
