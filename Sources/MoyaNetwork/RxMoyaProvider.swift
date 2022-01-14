@@ -28,22 +28,15 @@ public extension Reactive where Base: MoyaProvider<MultiTarget> {
                     do {
                         let response = try response.filterSuccessfulStatusCodes()
                         let json = try response.mapJSON()
-                        NetworkDebugging.DebuggingResponse(json, false, true)
                         single(.success(json))
                     } catch MoyaError.jsonMapping(let response) {
-                        let error = MoyaError.jsonMapping(response)
-                        NetworkDebugging.DebuggingResponse(error.localizedDescription, false, false)
-                        single(.failure(error))
+                        single(.failure(MoyaError.jsonMapping(response)))
                     } catch MoyaError.statusCode(let response) {
-                        let error = MoyaError.statusCode(response)
-                        NetworkDebugging.DebuggingResponse(error.localizedDescription, false, false)
-                        single(.failure(error))
+                        single(.failure(MoyaError.statusCode(response)))
                     } catch {
-                        NetworkDebugging.DebuggingResponse(error.localizedDescription, false, false)
                         single(.failure(error))
                     }
                 case let .failure(error):
-                    NetworkDebugging.DebuggingResponse(error.localizedDescription, false, false)
                     single(.failure(error))
                 }
             }
