@@ -29,7 +29,7 @@
         - **handyConfigurationPlugin**：处理配置插件
     - [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/PluginSubType.swift)：继承替换Moya插件协议，方便后序扩展
         - **configuration**：设置网络配置信息之后，开始准备请求之前，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
-        - **autoAgainRequest**：自动再次开启上次失败的网络请求，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
+        - **lastNever**：最后的最后网络响应返回时刻，该方法可以用于密钥失效重新去获取密钥然后自动再次网络请求等场景
     - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI.swift)：在`TargetType`基础上增加协议属性和封装基础网络请求
         - **ip**：根路径地址
         - **parameters**：请求参数
@@ -44,9 +44,10 @@
         - **cdy_testJSON**：测试数据
         - **cdy_testTime**：测试数据返回时间，默认半秒
         - **cdy_HTTPRequest**：网络请求方法
-    - [NetworkDebugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkDebugging.swift)：调试打印模式
-        - **openDebugRequest**：开启请求打印
-        - **openDebugResponse**：开启结果打印
+    - [NetworkX](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkX.swift)：扩展函数方法等
+        - **toJSON**：对象转JSON字符串
+        - **toDictionary**：JSON字符串转字典
+        - **+=**：字典拼接
 
 🎷 - 面向对象使用示例1:
 
@@ -166,6 +167,85 @@ extension CacheViewModel {
             .delay(.seconds(1), scheduler: MainScheduler.instance) // 延时1秒返回
             .asDriver(onErrorJustReturn: []) // 错误时刻返回空
     }
+}
+```
+
+🎷 - 链式请求使用示例4:
+
+```
+class ChainViewModel: NSObject {
+    
+    let disposeBag = DisposeBag()
+    
+    let data = PublishRelay<NSDictionary>()
+    
+    func chainLoad() {
+        requestIP()
+            .flatMapLatest(requestData)
+            .subscribe(onNext: { [weak self] data in
+                self?.data.accept(data)
+            }, onError: {
+                print("Network Failed: \($0)")
+            }).disposed(by: disposeBag)
+    }
+    
+}
+
+extension ChainViewModel {
+    
+    func requestIP() -> Observable<String> {
+        return ChainAPI.test.request()
+            .asObservable()
+            .map { ($0 as! NSDictionary)["origin"] as! String }
+            .catchAndReturn("") // 异常抛出
+    }
+    
+    func requestData(_ ip: String) -> Observable<NSDictionary> {
+        return ChainAPI.test2(ip).request()
+            .asObservable()
+            .map { ($0 as! NSDictionary) }
+            .catchAndReturn(["data": "nil"])
+    }
+}
+```
+
+🎷 - 批量请求使用示例5:
+
+```
+class BatchViewModel: NSObject {
+    
+    let disposeBag = DisposeBag()
+    
+    let data = PublishRelay<NSDictionary>()
+    
+    /// 配置加载动画插件
+    let APIProvider: MoyaProvider<MultiTarget> = {
+        let configuration = URLSessionConfiguration.default
+        configuration.headers = .default
+        configuration.timeoutIntervalForRequest = 30
+        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        let loading = NetworkLoadingPlugin.init()
+        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
+    }()
+    
+    func batchLoad() {
+        Observable.zip(
+            APIProvider.rx.request(api: BatchAPI.test).asObservable(),
+            APIProvider.rx.request(api: BatchAPI.test2("666")).asObservable(),
+            APIProvider.rx.request(api: BatchAPI.test3).asObservable()
+        ).subscribe(onNext: { [weak self] (data1, data2, data3) in
+            guard var data1 = data1 as? Dictionary<String, Any>,
+                  let data2 = data2 as? Dictionary<String, Any>,
+                  let data3 = data3 as? Dictionary<String, Any> else {
+                      return
+                  }
+            data1 += data2
+            data1 += data3
+            self?.data.accept(data1)
+        }, onError: {
+            print("Network Failed: \($0)")
+        }).disposed(by: disposeBag)
+    }    
 }
 ```
 

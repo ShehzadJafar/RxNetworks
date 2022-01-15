@@ -29,7 +29,7 @@ This module is based on the Moya encapsulated network API architecture.
          - **handyConfigurationPlugin**: Handles configuration plugins.
 	- [PluginSubType](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/PluginSubType.swift): Inherit and replace the Moya plug-in protocol to facilitate subsequent expansion.
          - **configuration**: After setting the network configuration information, before starting to prepare the request, this method can be used in scenarios such as key invalidation, re-acquiring the key and then automatically re-requesting the network.
-         - **autoAgainRequest**: Automatically re-open the last failed network request, this method can be used in scenarios such as key failure to obtain the key again and then automatically re-request the network.
+         - **lastNever**: When the last network response is returned, this method can be used in scenarios such as key failure to re-obtain the key and then automatically re-request the network.
     - [NetworkAPI](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkAPI.swift): Add protocol attributes and encapsulate basic network requests based on TargetType.
         - **ip**: Root path address to base URL.
         - **parameters**: Request parameters.
@@ -44,9 +44,10 @@ This module is based on the Moya encapsulated network API architecture.
         - **cdy_testJSON**: Network testing json string.
         - **cdy_testTime**: Network test data return time, the default is half a second.
         - **cdy_HTTPRequest**: Network request method and return a Single sequence object.
-    - [NetworkDebugging](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkDebugging.swift)：Debug print mode
-        - **openDebugRequest**：Enable print request information.
-        - **openDebugResponse**：Turn on printing the response result.
+    - [NetworkX](https://github.com/yangKJ/RxNetworks/blob/master/Sources/MoyaNetwork/NetworkX.swift): extension function methods etc.
+        - **toJSON**: to JSON string.
+        - **toDictionary**: JSON string to dictionary.
+        - **+=**: Dictionary concatenation.
 
 🎷 - OO Example 1:
 
@@ -168,6 +169,86 @@ extension CacheViewModel {
     }
 }
 ```
+
+🎷 - Chain Example 4:
+
+```
+class ChainViewModel: NSObject {
+    
+    let disposeBag = DisposeBag()
+    
+    let data = PublishRelay<NSDictionary>()
+    
+    func chainLoad() {
+        requestIP()
+            .flatMapLatest(requestData)
+            .subscribe(onNext: { [weak self] data in
+                self?.data.accept(data)
+            }, onError: {
+                print("Network Failed: \($0)")
+            }).disposed(by: disposeBag)
+    }
+    
+}
+
+extension ChainViewModel {
+    
+    func requestIP() -> Observable<String> {
+        return ChainAPI.test.request()
+            .asObservable()
+            .map { ($0 as! NSDictionary)["origin"] as! String }
+            .catchAndReturn("") // Exception thrown
+    }
+    
+    func requestData(_ ip: String) -> Observable<NSDictionary> {
+        return ChainAPI.test2(ip).request()
+            .asObservable()
+            .map { ($0 as! NSDictionary) }
+            .catchAndReturn(["data": "nil"])
+    }
+}
+```
+
+🎷 - Batch Example 5:
+
+```
+class BatchViewModel: NSObject {
+    
+    let disposeBag = DisposeBag()
+    
+    let data = PublishRelay<NSDictionary>()
+    
+    /// Configure loading animation plugin
+    let APIProvider: MoyaProvider<MultiTarget> = {
+        let configuration = URLSessionConfiguration.default
+        configuration.headers = .default
+        configuration.timeoutIntervalForRequest = 30
+        let session = Moya.Session(configuration: configuration, startRequestsImmediately: false)
+        let loading = NetworkLoadingPlugin.init()
+        return MoyaProvider<MultiTarget>(session: session, plugins: [loading])
+    }()
+    
+    func batchLoad() {
+        Observable.zip(
+            APIProvider.rx.request(api: BatchAPI.test).asObservable(),
+            APIProvider.rx.request(api: BatchAPI.test2("666")).asObservable(),
+            APIProvider.rx.request(api: BatchAPI.test3).asObservable()
+        ).subscribe(onNext: { [weak self] (data1, data2, data3) in
+            guard var data1 = data1 as? Dictionary<String, Any>,
+                  let data2 = data2 as? Dictionary<String, Any>,
+                  let data3 = data3 as? Dictionary<String, Any> else {
+                      return
+                  }
+            data1 += data2
+            data1 += data3
+            self?.data.accept(data1)
+        }, onError: {
+            print("Network Failed: \($0)")
+        }).disposed(by: disposeBag)
+    }
+}
+```
+
 
 ### MoyaPlugins
 This module is mainly based on moya package network related plug-ins
