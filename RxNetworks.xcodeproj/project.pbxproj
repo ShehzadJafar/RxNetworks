@@ -18,6 +18,12 @@
 		04233516278E61DE00547494 /* OOViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0423350C278E61DE00547494 /* OOViewController.swift */; };
 		04233519278E620D00547494 /* README_CN.md in Resources */ = {isa = PBXBuildFile; fileRef = 04233518278E620D00547494 /* README_CN.md */; };
 		0423351B278E622400547494 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0423351A278E622400547494 /* README.md */; };
+		0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89C2791E9E500AB04DB /* ChainViewModel.swift */; };
+		0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89D2791E9E500AB04DB /* ChainViewController.swift */; };
+		0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442C89E2791E9E500AB04DB /* ChainAPI.swift */; };
+		04C04F302792A69400E85B6B /* BatchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C04F2D2792A69400E85B6B /* BatchAPI.swift */; };
+		04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C04F2E2792A69400E85B6B /* BatchViewController.swift */; };
+		04C04F322792A69400E85B6B /* BatchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C04F2F2792A69400E85B6B /* BatchViewModel.swift */; };
 		04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C05416278D66F0008BCC42 /* HomeViewModel.swift */; };
 		04C05420278D6A49008BCC42 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C0541F278D6A49008BCC42 /* BaseViewController.swift */; };
 		36ADE5ADE90CB24F23D9B8B5 /* Pods_RxNetworks_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98F08FBE2C4FF0E3FC645118 /* Pods_RxNetworks_Example.framework */; };
@@ -40,6 +46,12 @@
 		0423350C278E61DE00547494 /* OOViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OOViewController.swift; sourceTree = "<group>"; };
 		04233518278E620D00547494 /* README_CN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_CN.md; sourceTree = SOURCE_ROOT; };
 		0423351A278E622400547494 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		0442C89C2791E9E500AB04DB /* ChainViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainViewModel.swift; sourceTree = "<group>"; };
+		0442C89D2791E9E500AB04DB /* ChainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainViewController.swift; sourceTree = "<group>"; };
+		0442C89E2791E9E500AB04DB /* ChainAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainAPI.swift; sourceTree = "<group>"; };
+		04C04F2D2792A69400E85B6B /* BatchAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchAPI.swift; sourceTree = "<group>"; };
+		04C04F2E2792A69400E85B6B /* BatchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchViewController.swift; sourceTree = "<group>"; };
+		04C04F2F2792A69400E85B6B /* BatchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchViewModel.swift; sourceTree = "<group>"; };
 		04C05416278D66F0008BCC42 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		04C0541F278D6A49008BCC42 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* RxNetworks_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxNetworks_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +111,28 @@
 			path = Modules/OO;
 			sourceTree = "<group>";
 		};
+		0442C89B2791E9E500AB04DB /* Chain */ = {
+			isa = PBXGroup;
+			children = (
+				0442C89E2791E9E500AB04DB /* ChainAPI.swift */,
+				0442C89D2791E9E500AB04DB /* ChainViewController.swift */,
+				0442C89C2791E9E500AB04DB /* ChainViewModel.swift */,
+			);
+			name = Chain;
+			path = Modules/Chain;
+			sourceTree = "<group>";
+		};
+		04C04F2C2792A69400E85B6B /* Batch */ = {
+			isa = PBXGroup;
+			children = (
+				04C04F2D2792A69400E85B6B /* BatchAPI.swift */,
+				04C04F2E2792A69400E85B6B /* BatchViewController.swift */,
+				04C04F2F2792A69400E85B6B /* BatchViewModel.swift */,
+			);
+			name = Batch;
+			path = Modules/Batch;
+			sourceTree = "<group>";
+		};
 		04C053FD278D5705008BCC42 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,7 +148,9 @@
 		04C053FE278D5D07008BCC42 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				04C04F2C2792A69400E85B6B /* Batch */,
 				04233501278E61DE00547494 /* Cache */,
+				0442C89B2791E9E500AB04DB /* Chain */,
 				04233506278E61DE00547494 /* Loading */,
 				0423350A278E61DE00547494 /* OO */,
 			);
@@ -315,14 +351,20 @@
 				04233512278E61DE00547494 /* LoadingAPI.swift in Sources */,
 				04233511278E61DE00547494 /* CacheModel.swift in Sources */,
 				607FACD81AFB9204008FA782 /* HomeViewController.swift in Sources */,
+				04C04F312792A69400E85B6B /* BatchViewController.swift in Sources */,
 				0423350F278E61DE00547494 /* CacheViewController.swift in Sources */,
+				0442C8A02791E9E500AB04DB /* ChainViewController.swift in Sources */,
+				04C04F322792A69400E85B6B /* BatchViewModel.swift in Sources */,
 				04233515278E61DE00547494 /* OOViewModel.swift in Sources */,
+				0442C8A12791E9E500AB04DB /* ChainAPI.swift in Sources */,
 				04C05420278D6A49008BCC42 /* BaseViewController.swift in Sources */,
 				0423350E278E61DE00547494 /* CacheViewModel.swift in Sources */,
 				04C05417278D66F0008BCC42 /* HomeViewModel.swift in Sources */,
+				0442C89F2791E9E500AB04DB /* ChainViewModel.swift in Sources */,
 				04233513278E61DE00547494 /* LoadingViewModel.swift in Sources */,
 				04233516278E61DE00547494 /* OOViewController.swift in Sources */,
 				04233514278E61DE00547494 /* LoadingViewController.swift in Sources */,
+				04C04F302792A69400E85B6B /* BatchAPI.swift in Sources */,
 				04233510278E61DE00547494 /* CacheAPI.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
