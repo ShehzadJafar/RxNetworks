@@ -59,7 +59,7 @@ extension NetworkAPI {
         }, session: session, plugins: tempPlugins)
         let single = MoyaProvider.rx.request(api: self, callbackQueue: callbackQueue)
         
-        let angin = NetworkUtil.handyAutoAgainRequestPlugin(tempPlugins, target: target, single: single)
+        let angin = NetworkUtil.handyLastNeverPlugin(tempPlugins, target: target, single: single)
         if angin == true {
             return self.request(callbackQueue: callbackQueue)
         }

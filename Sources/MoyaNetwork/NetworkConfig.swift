@@ -49,24 +49,3 @@ public struct NetworkConfig {
         NetworkConfig.baseParameters = dict
     }
 }
-
-public func toJSON(form value: Any) -> String? {
-    guard JSONSerialization.isValidJSONObject(value) else {
-        return nil
-    }
-    guard let data = try? JSONSerialization.data(withJSONObject: value, options: []) else {
-        return nil
-    }
-    let JSONString = String(data:data ,encoding: .utf8)
-    
-    return JSONString
-}
-
-public func toDictionary(form json: String) -> [String : Any]? {
-    guard let jsonData = json.data(using: .utf8),
-        let object = try? JSONSerialization.jsonObject(with: jsonData, options: []),
-        let result = object as? [String : Any] else {
-            return nil
-        }
-    return result
-}
