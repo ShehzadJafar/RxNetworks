@@ -25,7 +25,6 @@ class ChainViewModel: NSObject {
                 print("Network Failed: \($0)")
             }).disposed(by: disposeBag)
     }
-    
 }
 
 extension ChainViewModel {

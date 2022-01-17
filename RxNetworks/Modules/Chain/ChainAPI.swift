@@ -43,6 +43,13 @@ extension ChainAPI: NetworkAPI {
     }
     
     var plugins: APIPlugins {
-        return [NetworkLoadingPlugin.init()]
+        switch self {
+        case .test:
+            let loading = NetworkLoadingPlugin(autoHideLoading: false)
+            return [loading]
+        case .test2(_):
+            let loading = NetworkLoadingPlugin()
+            return [loading]
+        }
     }
 }

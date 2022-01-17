@@ -16,6 +16,10 @@ import MBProgressHUD
 /// Load the plug-in, based on MBProgressHUD package
 public final class NetworkLoadingPlugin {
     
+    // 用于区分其他插件等是否使用过`MBProgressHUD`
+    // Used to distinguish whether other plugins have used `MBProgressHUD`
+    public static let LoadingHUDT = 5200123
+    
     /// Whether to display the Window again, the default is YES
     let displayInWindow: Bool
     /// Do you need to display the loading chrysanthemum, the default is YES
@@ -25,14 +29,22 @@ public final class NetworkLoadingPlugin {
     /// Delay hidden, the default is zero seconds
     let delayHideHUD: TimeInterval
     
+    /// 是否需要自动隐藏Loading，可用于链式请求时刻
+    /// 最开始的网络请求开启Loading，最末尾网络请求结束再移除Loading
+    /// Whether you need to automatically hide Loading, it can be used for chain request.
+    /// The first network request starts loading, and the last network request ends and then removes the loading
+    public private(set) var autoHideLoading: Bool = true
+    
     public init(displayInWindow: Bool = true,
                 displayLoading: Bool = true,
                 displayLoadText: String = "",
-                delayHideHUD: TimeInterval = 0.0) {
+                delayHideHUD: TimeInterval = 0.0,
+                autoHideLoading: Bool = true) {
         self.displayInWindow = displayInWindow
         self.displayLoading = displayLoading
         self.displayLoadText = displayLoadText
         self.delayHideHUD = delayHideHUD
+        self.autoHideLoading = autoHideLoading
     }
 }
 
@@ -45,6 +57,12 @@ extension NetworkLoadingPlugin: PluginSubType {
     }
     
     public func didReceive(_ result: Result<Moya.Response, MoyaError>, target: TargetType) {
+        if autoHideLoading == false {
+            switch result {
+            case .success(_): return
+            case .failure(_): break
+            }
+        }
         if delayHideHUD > 0 {
             DispatchQueue.global().asyncAfter(deadline: .now() + delayHideHUD) {
                 NetworkLoadingPlugin.hideMBProgressHUD()
@@ -66,7 +84,7 @@ extension NetworkLoadingPlugin {
         DispatchQueue.main.async {
             guard let view = window ? NetworkLoadingPlugin.keyWindow :
                     NetworkLoadingPlugin.topViewController?.view else { return }
-            if let _ = MBProgressHUD.forView(view) {
+            if let _hud = MBProgressHUD.forView(view), _hud.tag == NetworkLoadingPlugin.LoadingHUDT {
                 return
             }
             // 设置加载为白色
@@ -74,6 +92,7 @@ extension NetworkLoadingPlugin {
             indicatorView.color = UIColor.white
             
             let hud = MBProgressHUD.showAdded(to: view, animated: true)
+            hud.tag = NetworkLoadingPlugin.LoadingHUDT
             hud.removeFromSuperViewOnHide = true
             hud.bezelView.style = MBProgressHUDBackgroundStyle.solidColor
             hud.bezelView.color = UIColor.black.withAlphaComponent(0.7)
@@ -98,11 +117,17 @@ extension NetworkLoadingPlugin {
     public static func hideMBProgressHUD() {
         DispatchQueue.main.async {
             if let view = NetworkLoadingPlugin.keyWindow {
-                MBProgressHUD.hide(for: view, animated: true)
+                NetworkLoadingPlugin.hideView(view)
             }
             if let vc = NetworkLoadingPlugin.topViewController, let view = vc.view {
-                MBProgressHUD.hide(for: view, animated: true)
+                NetworkLoadingPlugin.hideView(view)
             }
+        }
+    }
+    
+    private static func hideView(_ view: UIView) {
+        if let hud = MBProgressHUD.forView(view), hud.tag == NetworkLoadingPlugin.LoadingHUDT {
+            MBProgressHUD.hide(for: view, animated: true)
         }
     }
     

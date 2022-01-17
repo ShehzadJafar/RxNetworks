@@ -10,7 +10,7 @@ import Moya
 
 /// 指示器插件，该插件已被设置为全局使用
 /// Indicator plug-in, the plug-in has been set for global use
-public final class NetworkIndicatorPlugin: PluginSubType {
+public final class NetworkIndicatorPlugin {
     
     private static var numberOfRequests: Int = 0 {
         didSet {
@@ -22,6 +22,9 @@ public final class NetworkIndicatorPlugin: PluginSubType {
     }
     
     public init() { }
+}
+
+extension NetworkIndicatorPlugin: PluginSubType {
     
     public func willSend(_ request: RequestType, target: TargetType) {
         NetworkIndicatorPlugin.numberOfRequests += 1
@@ -31,4 +34,3 @@ public final class NetworkIndicatorPlugin: PluginSubType {
         NetworkIndicatorPlugin.numberOfRequests -= 1
     }
 }
-
