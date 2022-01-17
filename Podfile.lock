@@ -9,33 +9,33 @@ PODS:
   - RxCocoa (6.2.0):
     - RxRelay (= 6.2.0)
     - RxSwift (= 6.2.0)
-  - RxNetworks (0.0.6):
-    - RxNetworks/HandyJSON (= 0.0.6)
-    - RxNetworks/MoyaNetwork (= 0.0.6)
-    - RxNetworks/MoyaPlugins (= 0.0.6)
-  - RxNetworks/HandyJSON (0.0.6):
+  - RxNetworks (0.0.7):
+    - RxNetworks/HandyJSON (= 0.0.7)
+    - RxNetworks/MoyaNetwork (= 0.0.7)
+    - RxNetworks/MoyaPlugins (= 0.0.7)
+  - RxNetworks/HandyJSON (0.0.7):
     - HandyJSON
     - RxSwift
-  - RxNetworks/MoyaNetwork (0.0.6):
+  - RxNetworks/MoyaNetwork (0.0.7):
     - Moya
     - RxSwift
-  - RxNetworks/MoyaPlugins (0.0.6):
-    - RxNetworks/MoyaPlugins/Cache (= 0.0.6)
-    - RxNetworks/MoyaPlugins/Debugging (= 0.0.6)
-    - RxNetworks/MoyaPlugins/Indicator (= 0.0.6)
-    - RxNetworks/MoyaPlugins/Loading (= 0.0.6)
-    - RxNetworks/MoyaPlugins/Warning (= 0.0.6)
-  - RxNetworks/MoyaPlugins/Cache (0.0.6):
+  - RxNetworks/MoyaPlugins (0.0.7):
+    - RxNetworks/MoyaPlugins/Cache (= 0.0.7)
+    - RxNetworks/MoyaPlugins/Debugging (= 0.0.7)
+    - RxNetworks/MoyaPlugins/Indicator (= 0.0.7)
+    - RxNetworks/MoyaPlugins/Loading (= 0.0.7)
+    - RxNetworks/MoyaPlugins/Warning (= 0.0.7)
+  - RxNetworks/MoyaPlugins/Cache (0.0.7):
     - RxNetworks/MoyaNetwork
     - YYCache
-  - RxNetworks/MoyaPlugins/Debugging (0.0.6):
+  - RxNetworks/MoyaPlugins/Debugging (0.0.7):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Indicator (0.0.6):
+  - RxNetworks/MoyaPlugins/Indicator (0.0.7):
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Loading (0.0.6):
+  - RxNetworks/MoyaPlugins/Loading (0.0.7):
     - MBProgressHUD
     - RxNetworks/MoyaNetwork
-  - RxNetworks/MoyaPlugins/Warning (0.0.6):
+  - RxNetworks/MoyaPlugins/Warning (0.0.7):
     - MBProgressHUD
     - RxNetworks/MoyaNetwork
   - RxRelay (6.2.0):
@@ -68,7 +68,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
-  RxNetworks: 045c7566e475602fadd0d02e4eea5883f304b853
+  RxNetworks: bb9adc507dcecde4323c79cc2f77da0de8df8c7b
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
